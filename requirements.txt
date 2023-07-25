@@ -6,3 +6,19 @@ backoff~=2.2.1
 langchain~=0.0.187
 transformers~=4.30.2
 faiss~=1.7.4
+# pip
+# pip install langsmith && conda install langchain -c conda-forge
+langchain
+# pip
+llama-index
+# conda
+transformers
+# pip
+spiCy
+# python -m spacy download zh_core_web_sm
+
+
+pip install chardet
+conda install -c conda-forge charset-normalizer
+pip install cpm_kernels
+pip install sentencepiece
