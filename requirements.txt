@@ -1,4 +1,8 @@
 tiktoken==0.4.0
+aiohttp==3.8.3
+numpy==1.24.0
+jupyterlab==4.0.1
+jupyter_client==8.2.0
 
 openai~=0.27.7
 pandas~=1.5.3
@@ -22,3 +26,6 @@ pip install chardet
 conda install -c conda-forge charset-normalizer
 pip install cpm_kernels
 pip install sentencepiece
+
+# %pip install openai-whisper
+# %pip install setuptools-rust
