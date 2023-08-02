@@ -11,7 +11,6 @@ def set_proxy():
 
 def test_cuda():
     import torch
-    import cv2
     print(torch.cuda.is_available())
 
 if __name__ == '__main__':

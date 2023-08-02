@@ -14,18 +14,21 @@ cache_dir.mkdir(parents=True, exist_ok=True)
 def set_openai():
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 def inner_md5(string: str):
     return md5(string.encode("utf-8")).hexdigest()
+
 
 def speech_to_text_whisper_api(mp3_file_path: Path, prompt: str = ""):
     cache_file_path = cache_dir.joinpath(f"speech_to_text_whisper_api_{inner_md5(str(mp3_file_path))}")
     if cache_file_path.exists():
         # read file and return
-
-        return
+        print(f"read from cache : {cache_file_path}")
+        return cache_file_path.read_text()
     audio_file = open(mp3_file_path, "rb")
     transcript = openai.Audio.transcribe("whisper-1", audio_file, prompt=prompt)
     result = transcript['text']
+    cache_file_path.write_text(result)
     return result
 
 
@@ -95,10 +98,10 @@ if __name__ == '__main__':
     set_proxy()
     set_openai()
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    prompt = "这是一段中国网络小说的内容。"
+    prompt = "这是一段中文播客。是《剑来》小说的节选。"
     # api : 0.06$
-    text = speech_to_text_whisper_api(Path(f"{script_dir}/data/jianlai_1.mp3"), prompt=prompt)
     begin = time.time()
+    text = speech_to_text_whisper_api(Path(f"{script_dir}/data/jianlai_1.mp3"), prompt=prompt)
     # text = speech_to_text_whisper_model(Path(f"{script_dir}/data/jianlai_1.mp3"))
     print(f"speech_to_text consumed : {time.time() - begin}")
     print("text:")

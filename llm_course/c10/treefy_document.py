@@ -17,7 +17,6 @@ if __name__ == '__main__':
 
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
 
-
     list_index = GPTListIndex(nodes=nodes, service_context=service_context)
     response = list_index.query("下面鲁迅先生以第一人称‘我’写的内容，请你用中文总结一下:",
                                 response_mode="tree_summarize")
