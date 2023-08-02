@@ -6,9 +6,7 @@
         <entry key="$PROJECT_DIR$/.idea/openai_api.iml">
           <value>
             <JupyterConnectionParameters>
-              <option name="argv" value="notebook --no-browser --ip=0.0.0.0 --port=18888" />
               <option name="managed" value="true" />
-              <option name="sdkName" value="" />
             </JupyterConnectionParameters>
           </value>
         </entry>

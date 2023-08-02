@@ -1,8 +1,10 @@
 import os
+PROXY = os.environ['VPN_PROXY']
+os.environ["http_proxy"] = PROXY
+os.environ["https_proxy"] = PROXY
 
 
 def set_proxy():
-    print(os.environ)
     PROXY = os.environ['VPN_PROXY']
     os.environ["http_proxy"] = PROXY
     os.environ["https_proxy"] = PROXY
