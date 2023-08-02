@@ -1,3 +1,5 @@
+import time
+from hashlib import md5
 from pathlib import Path
 from typing import List
 
@@ -5,20 +7,31 @@ import openai, os
 
 from util.proxy import set_proxy
 
+cache_dir = Path("./data/cache")
+cache_dir.mkdir(parents=True, exist_ok=True)
+
 
 def set_openai():
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def speech_to_text_whisper_api(mp3_file_path: Path):
+def speech_to_text_whisper_api(mp3_file_path: Path, prompt: str = ""):
+    cache_file_path = cache_dir.joinpath(f"speech_to_text_whisper_api_{md5(str(mp3_file_path))}")
+    if cache_file_path.exists():
+        # read file and return
+
+        return
     audio_file = open(mp3_file_path, "rb")
     transcript = openai.Audio.transcribe("whisper-1", audio_file)
     result = transcript['text']
     return result
 
 
-def speech_to_text_whisper_model():
-    pass
+def speech_to_text_whisper_model(mp3_file_path: Path, prompt: str = ""):
+    import whisper
+    model = whisper.load_model("large")
+    result = model.transcribe(str(mp3_file_path), initial_prompt=prompt)
+    return result[text]
 
 
 def split_mp3(mp3_file_path: Path, by_time_s: int) -> List[Path]:
@@ -80,11 +93,17 @@ if __name__ == '__main__':
     set_proxy()
     set_openai()
     script_dir = os.path.dirname(os.path.realpath(__file__))
+    prompt = "这是一段中国网络小说的内容。"
     # api : 0.06$
     # text = speech_to_text_whisper_api(Path(f"{script_dir}/data/jianlai_1.mp3"))
-    # print("text:")
-    # print(text)
-    # print()
-    summary = texts_to_summary([])
-    print("summary:")
-    print(summary)
+    begin = time.time()
+    text = speech_to_text_whisper_model(Path(f"{script_dir}/data/jianlai_1.mp3"))
+    print(f"speech_to_text consumed : {time.time() - begin}")
+    print("text:")
+    print(text)
+    print()
+    begin = time.time()
+    # summary = texts_to_summary([])
+    print(f"summary consumed : {time.time() - begin}")
+    # print("summary:")
+    # print(summary)

@@ -9,6 +9,10 @@ def set_proxy():
     os.environ["http_proxy"] = PROXY
     os.environ["https_proxy"] = PROXY
 
+def test_cuda():
+    import torch
+    import cv2
+    print(torch.cuda.is_available())
 
 if __name__ == '__main__':
-    set_proxy()
+    test_cuda()
