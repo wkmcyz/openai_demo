@@ -3,14 +3,14 @@ from util.proxy import set_proxy
 
 # display some images
 def display_images(images):
-    fig, axes = plt.subplots(1, 5, figsize=(15, 6))
+    fig, axes = plt.subplots(2, 5, figsize=(15, 6))
     axes = axes.ravel()
 
     for idx, img in enumerate(images):
         axes[idx].imshow(img)
         axes[idx].axis('off')
 
-    plt.subplots_adjust(wspace=-1.2, hspace=0.2)
+    plt.subplots_adjust(wspace=0.2, hspace=0.2)
     plt.show()
 
 
@@ -102,14 +102,15 @@ if __name__ == '__main__':
 
         # Get the corresponding images and distances
         results = [
-            {"image": training_split[i]["image"], "distance": distances[0][j]}
-            for j, i in enumerate(indices[0])
+            # {"image": training_split.select(i)["image"], "distance": distances[0][j]}
+            {"image": training_split[int(image_index)]["image"], "distance": distances[0][j]}
+            for j, image_index in enumerate(indices[0])
         ]
 
         return results
 
 
-    query_text = "A red dress"
+    query_text = "A blue dress"
     results = search(query_text)
 
 

@@ -25,6 +25,7 @@ def speech_to_text_whisper_api(mp3_file_path: Path, prompt: str = ""):
         # read file and return
         print(f"read from cache : {cache_file_path}")
         return cache_file_path.read_text()
+        return
     audio_file = open(mp3_file_path, "rb")
     transcript = openai.Audio.transcribe("whisper-1", audio_file, prompt=prompt)
     result = transcript['text']
@@ -33,10 +34,18 @@ def speech_to_text_whisper_api(mp3_file_path: Path, prompt: str = ""):
 
 
 def speech_to_text_whisper_model(mp3_file_path: Path, prompt: str = ""):
+    cache_file_path = cache_dir.joinpath(f"speech_to_text_whisper_model_{inner_md5(str(mp3_file_path))}")
+    if cache_file_path.exists():
+        # read file and return
+        print(f"read from cache {cache_file_path}")
+        return cache_file_path.read_text()
     import whisper
     model = whisper.load_model("large")
     result = model.transcribe(str(mp3_file_path), initial_prompt=prompt)
-    return result[text]
+    print(result)
+    result = result['text']
+    cache_file_path.write_text(result)
+    return result
 
 
 def split_mp3(mp3_file_path: Path, by_time_s: int) -> List[Path]:
@@ -102,7 +111,8 @@ if __name__ == '__main__':
     # api : 0.06$
     begin = time.time()
     text = speech_to_text_whisper_api(Path(f"{script_dir}/data/jianlai_1.mp3"), prompt=prompt)
-    # text = speech_to_text_whisper_model(Path(f"{script_dir}/data/jianlai_1.mp3"))
+    # text = speech_to_text_whisper_model(Path(f"{script_dir}/data/jianlai_1.mp3"), prompt=prompt)
+    text = speech_to_text_whisper_model(Path(f"{script_dir}/data/podcast_clip.mp3"), prompt=prompt)
     print(f"speech_to_text consumed : {time.time() - begin}")
     print("text:")
     print(text)
